@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Hulk Lv"><title>get和post请求 · Hulk Lv' Blog</title><meta name="description" content="get/post是什么？get/post是HTTP常用的两种请求方式。
+
+get：从指定的资源请求数据
+post：向指定的资源提交要被处理的数据
+
+HTTP又是什么？HTTP（HyperText Transfer Protocol）超文本传输协议，是互联网上应用最为广泛的一种网络协议。设计HTTP最"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Hulk Lv' Blog</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a href="https://github.com/xiaojiaolv131">GitHub </a><a href="http://weibo.com/u/1172318487"> WeiBo </a></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a onclick="window.history.go(-1)" class="fa fa-chevron-left"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>get和post请求</a></h3></div><div class="post-content"><h2 id="get-post是什么？"><a href="#get-post是什么？" class="headerlink" title="get/post是什么？"></a>get/post是什么？</h2><p>get/post是HTTP常用的两种请求方式。</p>
+<ul>
+<li>get：从指定的资源请求数据</li>
+<li>post：向指定的资源提交要被处理的数据</li>
+</ul>
+<h2 id="HTTP又是什么？"><a href="#HTTP又是什么？" class="headerlink" title="HTTP又是什么？"></a>HTTP又是什么？</h2><p>HTTP（HyperText Transfer Protocol）超文本传输协议，是互联网上应用最为广泛的一种网络协议。设计HTTP最初的目的是为了提供一种发布和接收HTML页面的方法，保证客户机与服务器的通信。通过HTTP或者HTTPS协议请求的资源由统一资源标识符（Uniform Resource Identifiers，URI）来标识。</p>
+<h2 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h2><p>查询字符串（key/value）是在get请求的<code>url</code>中发送的，像这样儿：<br><code>/cityinfo?cityid=12&amp;cityname=bj</code></p>
+<p>关于get请求的说明：</p>
+<ul>
+<li>get 请求可被缓存</li>
+<li>get 请求保留在浏览器历史记录中</li>
+<li>get 请求可被收藏为书签</li>
+<li>get 请求不应在处理敏感数据时使用</li>
+<li>get 请求有长度限制</li>
+<li>get 请求只应当用于取回数据</li>
+</ul>
+<h2 id="post方法"><a href="#post方法" class="headerlink" title="post方法"></a>post方法</h2><p>查询字符串（key/value）是在post请求的<code>HTTP消息主体</code>中发送的,像这样儿：<br><code>POST /test/demo_form.asp HTTP/1.1
+Host: w3schools.com
+name1=value1&amp;name2=value2</code></p>
+<p>关于post请求的说明：</p>
+<ul>
+<li>post 请求不会被缓存</li>
+<li>post 请求不会保留在浏览器历史记录中</li>
+<li>post 不能被收藏为书签</li>
+<li>post 请求对数据长度没有要求</li>
+</ul>
+<h2 id="比较get和post"><a href="#比较get和post" class="headerlink" title="比较get和post"></a>比较get和post</h2><h3 id="后退按钮-刷新"><a href="#后退按钮-刷新" class="headerlink" title="后退按钮/刷新"></a>后退按钮/刷新</h3><ul>
+<li>get：无害      </li>
+<li>post：数据会被重新提交（浏览器应该告知用户数据会被重新提交）</li>
+</ul>
+<h3 id="书签"><a href="#书签" class="headerlink" title="书签"></a>书签</h3><ul>
+<li>get：可收藏为书签</li>
+<li>post：不可收藏为书签 </li>
+</ul>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
+<li>get：能被缓存</li>
+<li>post：不能被缓存</li>
+</ul>
+<h3 id="编码类型"><a href="#编码类型" class="headerlink" title="编码类型"></a>编码类型</h3><ul>
+<li>get：application/x-www-form-urlencoded</li>
+<li>post：application/x-www-form-urlencoded 或 multipart/form-data。为二进制数据使用多重编码</li>
+</ul>
+<h3 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h3><ul>
+<li>get：参数保留在浏览器历史中</li>
+<li>post：参数不会保存在浏览器历史中</li>
+</ul>
+<h3 id="对数据长度的限制"><a href="#对数据长度的限制" class="headerlink" title="对数据长度的限制"></a>对数据长度的限制</h3><ul>
+<li>get：当发送数据时，GET 方法向 URL 添加数据；URL 的长度是受限制的（URL 的最大长度是 2048 个字符） </li>
+<li>post：无限制</li>
+</ul>
+<h3 id="对数据类型的限制"><a href="#对数据类型的限制" class="headerlink" title="对数据类型的限制"></a>对数据类型的限制</h3><ul>
+<li>get：只允许 ASCII 字符</li>
+<li>post：没有限制。也允许二进制数据</li>
+</ul>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><ul>
+<li>get：与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分，在发送密码或其他敏感信息时绝不要使用 GET ！ </li>
+<li>post：POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中</li>
+</ul>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><ul>
+<li>get：数据在 URL 中对所有人都是可见的</li>
+<li>post：数据不会显示在 URL 中 </li>
+</ul>
+<h2 id="其他-HTTP-请求方法"><a href="#其他-HTTP-请求方法" class="headerlink" title="其他 HTTP 请求方法"></a>其他 HTTP 请求方法</h2><ul>
+<li>HEAD：与 GET 相同，但只返回 HTTP 报头，不返回文档主体。</li>
+<li>PUT：上传指定的 URI 表示。</li>
+<li>DELETE：删除指定资源。</li>
+<li>OPTIONS：返回服务器支持的 HTTP 方法。</li>
+<li>CONNECT：把请求连接转换到透明的 TCP/IP 通道。</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-06-14</span><i class="fa fa-tag"></i><a href="/tags/get/" title="get" class="tag">get </a><a href="/tags/post/" title="post" class="tag">post </a></div></div></div></div><div class="share"><div class="evernote"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></div><div class="weibo"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></div><div class="twitter"><a href="http://twitter.com/home?status=,http://yoursite.com/2017/06/14/get和post请求/,Hulk Lv' Blog,get和post请求,;" class="fa fa-twitter"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a role="navigation" href="/2017/06/14/JavaScript核心-闭包/" title="JavaScript核心-闭包" class="btn">上一篇</a></li><li class="next pagbuttons"><a role="navigation" href="/2017/06/14/浏览器缓存/" title="浏览器缓存" class="btn">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

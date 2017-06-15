@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Hulk Lv"><title>跨域HTTP请求 · Hulk Lv' Blog</title><meta name="description" content="什么是跨域HTTP请求？JavaScript出于安全方面的考虑，不允许跨域调用其他页面的对象。比如HTML中a/form/img/css/script/iframe/ajax都可以指向资源，如果发起请求的资源所在域不同于该请求所指向资源所在的域的HTTP请求就叫做跨域HTTP请求。
+何为不同的域？协"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Hulk Lv' Blog</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a href="https://github.com/xiaojiaolv131">GitHub </a><a href="http://weibo.com/u/1172318487"> WeiBo </a></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a onclick="window.history.go(-1)" class="fa fa-chevron-left"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>跨域HTTP请求</a></h3></div><div class="post-content"><h2 id="什么是跨域HTTP请求？"><a href="#什么是跨域HTTP请求？" class="headerlink" title="什么是跨域HTTP请求？"></a>什么是跨域HTTP请求？</h2><p>JavaScript出于安全方面的考虑，不允许跨域调用其他页面的对象。比如HTML中a/form/img/css/script/iframe/ajax都可以指向资源，如果发起请求的资源所在域不同于该请求所指向资源所在的域的HTTP请求就叫做跨域HTTP请求。</p>
+<h2 id="何为不同的域？"><a href="#何为不同的域？" class="headerlink" title="何为不同的域？"></a>何为不同的域？</h2><p>协议+域名+端口号都相同才是同域，有一个不相同都不行。</p>
+<h2 id="为什么要有跨域限制？"><a href="#为什么要有跨域限制？" class="headerlink" title="为什么要有跨域限制？"></a>为什么要有跨域限制？</h2><p>想一想，如果不做跨域限制，将产生什么问题：</p>
+<ul>
+<li>iframe嵌入：一个恶意网站的页面通过iframe嵌入了支付宝的登录页面（两者不同域），如果没有任何限制，恶意网页上的javascript脚本就可以在用户登录银行的时候获取用户信息进行恶意操做</li>
+<li>ajax请求：跨域请求别人的AJAX登录接口，也可以获取到用户信息进行恶意操做</li>
+</ul>
+<h2 id="如何对跨域进行限制？"><a href="#如何对跨域进行限制？" class="headerlink" title="如何对跨域进行限制？"></a>如何对跨域进行限制？</h2><ul>
+<li>直接不允许跨域请求</li>
+<li>服务端可以根据相关的header判断来源，限制访问。但header可以伪造呀~</li>
+<li>浏览器发起跨域请求时，进行限制，即同源策略</li>
+</ul>
+<blockquote>
+<p>同源策略<br>1、限制来自不同源的document或脚本，对当前document读取或设置某些属性<br>2、禁止ajax直接发起跨域HTTP请求（其实可以发送请求，结果被浏览器拦截，不展示）<br>3、允许img/css/script(拥有src的标签都有跨域的能力。加载下来就属于当前域了)<br>4、允许跨域的连接、跳转、表单提交（带来了跨站请求伪造CSRF问题）</p>
+</blockquote>
+<h2 id="怎样实现跨域？"><a href="#怎样实现跨域？" class="headerlink" title="怎样实现跨域？"></a>怎样实现跨域？</h2><p>AJAX跨域请求实现方式：</p>
+<ul>
+<li>通过代理：自己的服务器实现接口，后台调用其他域的接口</li>
+<li>JSONP：服务端调用本地js，并将结果带回</li>
+<li>CORS：扩展HTTP协议，根据服务端返回的有关HEADER来决定是否展示结果</li>
+</ul>
+<p>这里主要说一下JSONP和CORS跨域。</p>
+<h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p>JSON是一种数据交换格式，而JSONP是一种实现ajax跨域的方式。</p>
+<blockquote>
+<p>原理:<br>JSONP的原理是利用 <code>&lt;script&gt;</code>标签的<code>src</code>属性加载资源不受同源策略影响，其本质是向服务端请求一段 js 代码，像这样儿：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> scriptTag = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>)</div><div class="line"><span class="comment">// 其中cb是回调函数参数的名字，cbname是回调函数的名字，这两个名字要与服务端沟通定义</span></div><div class="line">scriptTag.src = <span class="string">'http://hcysun.me/xxx?cb=cbname'</span></div><div class="line"><span class="built_in">document</span>.body.appendChild(scriptTag)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>兼容性好，基本全部兼容</li>
+</ul>
+<p>缺陷：</p>
+<ul>
+<li>服务端需要指定JS的方法名</li>
+<li>只支持<code>GET</code></li>
+<li>确定JSONP请求是否失败并不容易，一般根据超时时间来判断</li>
+</ul>
+</blockquote>
+<h3 id="CORS跨域"><a href="#CORS跨域" class="headerlink" title="CORS跨域"></a>CORS跨域</h3><p>CORS(Cross-Origin Resource Sharing)跨域资源共享。它是一个规范，可以简单理解为对HTTP协议进行了扩展，增加了一些http header，让服务器能声明那些来源可以通过浏览器访问该服务器上的资源。</p>
+<blockquote>
+<p>原理：<br>1、当浏览器发现我们的XHR请求不符合同源策略时，会在请求头添加 Origin 字段，代表请求的来源<br>2、服务端需要处理请求头部的 Origin 字段，根据情况在响应头中添加</p>
+<ul>
+<li><code>Access-Control-Allow-Origin</code>指定一个允许向该服务器提交请求的URI.对于一个不带有credentials的请求,可以指定为*,表示允许来自所有域的请求</li>
+<li><code>Access-Control-Allow-Methods</code>在响应预检请求的时候使用.指明资源可以被请求的方式有哪些(一个或者多个)</li>
+<li><code>Access-Control-Allow-Headers</code>在响应预检请求的时候使用.用来指明在实际的请求中,可以使用哪些自定义HTTP请求头<br>等头信息。</li>
+</ul>
+<p>缺陷：<br>兼容性问题</p>
+</blockquote>
+<p>更多：<a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">cors</a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-06-15</span><i class="fa fa-tag"></i><a href="/tags/跨域/" title="跨域" class="tag">跨域 </a><a href="/tags/jsonp/" title="jsonp" class="tag">jsonp </a><a href="/tags/cors/" title="cors" class="tag">cors </a></div></div></div></div><div class="share"><div class="evernote"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></div><div class="weibo"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></div><div class="twitter"><a href="http://twitter.com/home?status=,http://yoursite.com/2017/06/15/跨域/,Hulk Lv' Blog,跨域HTTP请求,;" class="fa fa-twitter"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a role="navigation" href="/2017/06/14/移动端横向滑动/" title="移动端横向滑动" class="btn">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
