@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Hulk Lv"><title>Vuex+Vue.js状态管理及组件设计 · Hulk Lv' Blog</title><meta name="description" content="近期将公司APP项目整体升级到Vue2.x，并随之升级了Vuex，重新设计了一下项目工程的整体框架结构，大体如下：首先，App应用部分，主要包含项目各个主页面，每一个主页面下包含vue模板、静态页面容器、入口执行脚本、仓库（store）。
+
+vue模板：主要是vue实例对象和dom模板
+静态页面容器"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Hulk Lv' Blog</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a href="https://github.com/xiaojiaolv131">GitHub </a><a href="http://weibo.com/u/1172318487"> WeiBo </a></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a onclick="window.history.go(-1)" class="fa fa-chevron-left"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Vuex+Vue.js状态管理及组件设计</a></h3></div><div class="post-content"><blockquote>
+<p>近期将公司APP项目整体升级到Vue2.x，并随之升级了Vuex，重新设计了一下项目工程的整体框架结构，大体如下：<br>首先，App应用部分，主要包含项目各个主页面，每一个主页面下包含vue模板、静态页面容器、入口执行脚本、仓库（store）。</p>
+<ul>
+<li>vue模板：主要是vue实例对象和dom模板</li>
+<li>静态页面容器：就是一个静态的页面外皮</li>
+<li>入口执行脚本：主要功能是实现vue实例的创建，Vuex 通过 store 选项，提供了一种机制将状态从根组件“注入”到每一个子组件中（需调用 Vue.use(Vuex)），在创建vue实例的时候，我们把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件</li>
+<li>仓库（store）：store是Vuex应用的核心，store基本上就是一个容器，它包含着你的应用中大部分的状态 (state)，再次我们创建store实例对象，并在“入口执行脚本”中作为Vue实例的store选项，将此store实例注入所有子组件</li>
+</ul>
+<p>其次，Components组件部分，主要包含项目各个组件，每一个组件都提供一个Interface接口对象，该接口对象提供组件的所有核心，即State、Getters、Mutations、Actions、Modules。</p>
+<ul>
+<li>State：组件数据源</li>
+<li>Getters：访问器，用于访问组件数据源中的每个state，还可以对数据源进行筛选过滤</li>
+<li>Mutation-Types：变更事件类型集</li>
+<li>Actions:Action 类似于 mutation，但Action 提交的是 mutation，而不是直接变更状态，另外，Action 可以包含任意异步操作</li>
+</ul>
+</blockquote>
+<p>对象mutation类似于事件，每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数，但是motation只能用于处理同步操作。这里将常量Mutations类型放在单独的文件中，只是为了结构清晰，我们在Interface中关联所有Mutation-Types和对应的回调函数。<br>为了进一步区分常量Mutations类型和getters，我们在定义常量Mutations类型和getters访问器名称的时候，使用组件前缀进行区分，简化多兄弟组件的重名问题。</p>
+<p>下面，介绍一下公共组件：“职位列表”的设计，“职位列表“特点如下：</p>
+<ul>
+<li>DOM结构相似，但有不同之处</li>
+<li>数据请求url不同</li>
+<li>数据请求结果处理不同</li>
+</ul>
+<p>根据以上特点，我们将数据源设计如下：</p>
+<ul>
+<li>canNextRequest： 对外提供是否需要请求下一页数据</li>
+</ul>
+<p>局部数据如下：<br>// 是否过滤数据<br>uniqueFn: this.comListArgs.uniqueFiled ? Util.unique(this.comListArgs.uniqueFiled) : false,<br>// 页码<br>page: 1,<br>// 页数<br>pageSize: this.comListArgs.pageSize || 20,<br>// 底部load<br>bomLoading: {<br>    loading: false,<br>    noMore: false<br>},<br>// 快速双击记录状态<br>clickedItem: {},<br>//大家都在找tags数据状态<br>loadListStatus: ‘’,<br>isfirstPage: true</p>
+<p>对外提供属性如下：<br>// 监测父组件是否需要请求<br>comListQueryRecognition: {<br>    type: String,<br>    default: ‘’<br>},<br>// 组件参数对象<br>comListArgs: {<br>    type: Object,<br>    default: function() {<br>        return {};<br>    }<br>},<br>// 下一页回调<br>comListNextFun: {<br>    type: Function,<br>    default: function() {}<br>},<br>//设置是否有优选标签<br>isYouxuan: {<br>    type: Boolean,<br>    default: true<br>}</p>
+<p>并且，我们通过watch来监听comListQueryRecognition属性，已监测父组件是否需要请求，如果comListQueryRecognition状态变更，则去后天请求列表数据，这里我们需要注意的是，我们怎么区分是刷新列表还是请求下一页数据呢，因此，我们要去父组件在更改comListQueryRecognition状态的时候，加上标识，比如”loadPage“ or ”nextPage“，为了触发子组件comListQueryRecognition状态的更新，我们将在父组件中使用时间戳来触发子组件对comListQueryRecognition状态的监听。</p>
+<p>comListArgs组件参数对象，用于设置组件发送请求的参数、需要组件特殊处理的标识，比如是否显示DOM结构中的广告模块，以及子组件中职位列表的数据。<br>由于，数据请求结果处理不同，因此我们在ajax数据请求回来以后，会针对success、error、nonetwork三种状态，触发组件的三个自定义事件，并将返回数据推给父组件，因此，我们需要在父组件中注册这三个事件，并提供对应的处理函数，在处理函数中，我们将对返回数据进行包装处理，并通过comListArgs传回组件中进行数据的渲染。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-11-26</span><i class="fa fa-tag"></i></div></div></div></div><div class="share"><div class="evernote"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></div><div class="weibo"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></div><div class="twitter"><a href="http://twitter.com/home?status=,http://yoursite.com/2017/11/26/Vuex-Vue-js状态管理及组件设计/,Hulk Lv' Blog,Vuex+Vue.js状态管理及组件设计,;" class="fa fa-twitter"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a role="navigation" href="/2017/11/27/module-exports与exports，export与export-default之间的关系和区别/" title="module.exports与exports，export与export default之间的关系和区别" class="btn">上一篇</a></li><li class="next pagbuttons"><a role="navigation" href="/2017/10/23/JavaScript事件/" title="JavaScript事件" class="btn">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
